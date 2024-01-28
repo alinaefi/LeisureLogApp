@@ -3,7 +3,7 @@ from leisure_log_app.serializers import PostSerializer, UserSerializer
 from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework import permissions
-from leisure_log_app.permissions import IsAuthorOrReadOnly
+from leisure_log_app.permissions import IsAuthor
 
 
 class PostList(generics.ListCreateAPIView):
@@ -11,9 +11,15 @@ class PostList(generics.ListCreateAPIView):
     and POST request to create a new post"""
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        """Override queryset function: only user's posts returned"""
+        user = self.request.user
+        return user.posts.all()
+    
     def perform_create(self, serializer):
+        """Override saving a new object function: can only be created by current user"""
         serializer.save(author=self.request.user)
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -22,8 +28,8 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     and DELETE request to delete a specific post"""
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
-                      IsAuthorOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated,
+                      IsAuthor]
 
 class UserList(generics.ListAPIView):
     """Handles GET request to return list of users
