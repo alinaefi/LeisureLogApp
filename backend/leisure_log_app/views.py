@@ -4,8 +4,19 @@ from rest_framework import generics
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from leisure_log_app.permissions import IsAuthor
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from datetime import timedelta
 from django.utils import timezone
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'users': reverse('user-list', request=request, format=format),
+        'posts': reverse('post-list', request=request, format=format),
+        'retro': reverse('retro-list', request=request, format=format)
+    })
 
 class PostList(generics.ListCreateAPIView):
     """Handles GET request to return list of posts
@@ -45,8 +56,18 @@ class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-
 class RetroList(generics.ListAPIView):
+    """Handles GET request to return list of most highly rated posts of all time"""
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated, IsAuthor]
+    
+    def get_queryset(self):
+        """Override queryset function: only user's most rated posts returned"""
+        user = self.request.user
+        return user.posts.filter(rating__gt=3).order_by('type', '-created')
+
+class RetroDetail(generics.ListAPIView):
     """Handles GET request to return list of most highly rated posts
     for a given period of time"""
     queryset = Post.objects.all()
@@ -54,7 +75,7 @@ class RetroList(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated, IsAuthor]
     
     def get_queryset(self):
-        """Override queryset function: only user's most rated posts returned"""
+        """Override queryset function: only user's most rated posts returned for given period"""
         param = self.request.query_params.get('months', 3)
         user = self.request.user
         return user.posts.filter(created__gt=timezone.now()-timedelta(weeks=param*4.4),
