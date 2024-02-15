@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../App.css';
-
+import {
+  Input,
+  Form,
+  FormGroup,
+  Label,
+  Col,
+  Button
+} from "reactstrap";
 
 const RegistrationForm = () => {
   const [first_name, setFirstName] = useState('');
@@ -23,37 +30,64 @@ const RegistrationForm = () => {
   };
 
   return (
-    <form onSubmit={handleRegistration}>
-      <input
-        className="inputBox"
-        type="text"
-        placeholder="First Name"
-        value={first_name}
-        onChange={(e) => setFirstName(e.target.value)}
-      />
-      <input
-        className="inputBox"
-        type="text"
-        placeholder="Last Name"
-        value={last_name}
-        onChange={(e) => setLastName(e.target.value)}
-      />
-      <input
-        className="inputBox"
-        type="text"
-        placeholder="Email"
-        value={username}
-        onChange={(e) => setUserName(e.target.value)}
-      />
-      <input
-        className="inputBox"
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button className='button' type="submit">Register</button>
-    </form>
+    <div>
+      <Form onSubmit={handleRegistration}>
+        <h1 className='my-sub-heading'> Sign Up </h1>
+        <FormGroup row>
+          <Label for="First Name" sm={3}> First Name: </Label>
+          <Col sm={9}>
+            <Input
+              id="FirstName"
+              name="fname"
+              placeholder="First name"
+              type="text"
+              value={first_name}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Label for="Last Name" sm={3}> Last Name:</Label>
+          <Col sm={9}>
+            <Input
+              id="LastName"
+              name="lname"
+              placeholder="Last name"
+              type="text"
+              value={last_name}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Label for="Email" sm={3}> Email: </Label>
+          <Col sm={9}>
+            <Input
+              id="Email"
+              name="email"
+              placeholder="Email"
+              type="email"
+              value={username}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Label for="Password" sm={3}> Password: </Label>
+          <Col sm={9}>
+            <Input
+              id="Password"
+              name="password"
+              placeholder="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Col>
+        </FormGroup>
+        <Button color="info" type="submit"> Sign Up </Button>
+      </Form>
+    </div>
   );
 };
 

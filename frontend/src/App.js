@@ -1,19 +1,20 @@
 import React from 'react';
-import RegistrationForm from './components/RegistrationForm';
-import LoginForm from './components/LoginForm';
 import Logout from './components/Logout';
+import NotAuthNavbar from './components/NotAuthNavbar';
+import Footer from './components/Footer';
+import BodyContainer from './components/BodyContainer';
 import './App.css';
-
 
 const App = () => {
   return (
     <div>
-      <h2>Registration</h2>
-      <RegistrationForm />
-      <h2>Login</h2>
-      <LoginForm />
-      <h2>Logout</h2>
-      <Logout />
+      {/* non-logged in user view */}
+      <NotAuthNavbar />
+      <BodyContainer msg='Welcome!' />
+      <Footer />
+
+      {/* <h2>Logout</h2>
+      <Logout /> */}
     </div>
   );
 };
