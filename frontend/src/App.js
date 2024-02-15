@@ -5,8 +5,6 @@ import Footer from './components/Footer';
 import BodyContainer from './components/BodyContainer';
 import './App.css';
 
-
-
 const App = () => {
   return (
     <div>
