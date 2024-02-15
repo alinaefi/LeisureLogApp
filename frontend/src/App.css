@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+/* some custom styling */
+.my-main-heading {
+  text-align: center;
+  margin: 10px;
+  font-size: 32px;
+}
+
+.my-sub-heading {
+  text-align: center;
+  margin: 10px;
+  font-size: 24px;
+}
