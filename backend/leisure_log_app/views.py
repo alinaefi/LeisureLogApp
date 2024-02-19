@@ -34,12 +34,18 @@ class LoginView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)
-
-        # Redirect logged in user to account details page
-        return Response(reverse('user-detail', args=[user.id], request=request, format=format))
+        # return user
+        response_data = {
+            'user': {
+                'id': user.id,
+                'username': user.username,
+            }
+        }
+        return Response(data=response_data, status=200)
 
 
 class LogoutView(views.APIView):
+    permission_classes = (permissions.AllowAny,)
     """Handles GET request to log user out"""
     def get(self, request):
         logout(request)
@@ -70,7 +76,7 @@ class PostList(generics.ListCreateAPIView):
     and POST request to create a new post"""
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticated, IsAuthor]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         """Override queryset function: only user's posts returned"""

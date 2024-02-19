@@ -4,9 +4,9 @@ from leisure_log_app import views
 
 urlpatterns = format_suffix_patterns([
     path('', views.APIRootView.as_view()),
-    path('login/', views.LoginView.as_view(), name='login'),
+    path('api-auth/login/', views.LoginView.as_view(), name='login'),
     path('register/', views.RegistrationView.as_view(), name='register'),
-    path('logout/', views.LogoutView.as_view(), name='logout'),
+    path('api-auth/logout/', views.LogoutView.as_view(), name='logout'),
     path('posts/', views.PostList.as_view(), name='post-list'),
     path('posts/<int:pk>/', views.PostDetail.as_view(), name='post-detail'),
     path('users/', views.UserList.as_view(), name='user-list'),
