@@ -1,21 +1,27 @@
-import React from 'react';
-import Logout from './components/Logout';
-import NotAuthNavbar from './components/NotAuthNavbar';
+
+import { NotAuthNavbar, AuthNavbar } from './components/Navbar';
 import Footer from './components/Footer';
-import BodyContainer from './components/BodyContainer';
+import Dashboard from './components/Dashboard';
 import './App.css';
+import { useAuth } from './components/AuthProvider';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import RegistrationForm from './components/RegistrationForm';
+import LoginForm from './components/LoginForm';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
-  return (
-    <div>
-      {/* non-logged in user view */}
-      <NotAuthNavbar />
-      <BodyContainer msg='Welcome!' />
-      <Footer />
+  const { user } = useAuth();
 
-      {/* <h2>Logout</h2>
-      <Logout /> */}
-    </div>
+  return (
+    <Router>
+      {user ? <AuthNavbar /> : <NotAuthNavbar />}
+      <Routes>
+        <Route path="login/" element={<LoginForm />} />
+        <Route path="/register" element={<RegistrationForm />} />
+        <Route path="/posts" element={<PrivateRoute Component={Dashboard} />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 };
 
