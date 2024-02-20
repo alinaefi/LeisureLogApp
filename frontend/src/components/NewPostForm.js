@@ -12,6 +12,7 @@ import {
     Row
 } from "reactstrap";
 import { useNavigate } from 'react-router-dom';
+import { getCookie } from './cookieUtils';
 
 const NewPostForm = () => {
     const [title, setTitle] = useState('');
@@ -26,14 +27,20 @@ const NewPostForm = () => {
     const handleFormSubmittion = async (e) => {
         e.preventDefault();
         try {
-            const result = await axios.post('http://127.0.0.1:8000/posts/', {
+            const result = await axios.post('http://127.0.0.1:8000/posts/', 
+            {
                 title,
                 description,
                 url,
                 type,
                 comments,
                 rating,
-            });
+            },
+            {
+                headers: {'X-CSRFToken': getCookie('csrftoken')},
+                withCredentials: true 
+            }
+            );
             console.log(result);
 
             navigate('/posts');
@@ -45,6 +52,7 @@ const NewPostForm = () => {
 
     return (
         <div>
+            <h1>{getCookie('csrftoken')}</h1>
             <Container>
                 <Row>
                     <Col md={{ offset: 3, size: 6 }} sm="12">
