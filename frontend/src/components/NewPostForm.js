@@ -52,7 +52,6 @@ const NewPostForm = () => {
 
     return (
         <div>
-            <h1>{getCookie('csrftoken')}</h1>
             <Container>
                 <Row>
                     <Col md={{ offset: 3, size: 6 }} sm="12">

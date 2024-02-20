@@ -93,7 +93,6 @@ const RegistrationForm = () => {
                   />
                 </Col>
               </FormGroup>
-
               <Button color="info" type="submit"> Sign Up </Button>
             </Form>
           </Col>
