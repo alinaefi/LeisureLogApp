@@ -11,6 +11,8 @@ import {
   Container,
   Row
 } from "reactstrap";
+import { getCookie } from './cookieUtils';
+
 
 const RegistrationForm = () => {
   const [first_name, setFirstName] = useState('');
@@ -22,7 +24,8 @@ const RegistrationForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('register/', { first_name, last_name, username, password });
+      const response = await axios.post('register/', { first_name, last_name, username, password }, 
+      {headers: {'X-CSRFToken': getCookie('csrftoken')}});
       // Handle successful registration
       console.log(response.data);
     } catch (error) {
@@ -39,7 +42,7 @@ const RegistrationForm = () => {
             <Form onSubmit={handleRegistration}>
               <h1 className='my-sub-heading'> Sign Up </h1>
               <FormGroup row>
-                <Label for="First Name" sm={3}> First Name: </Label>
+                <Label for="FirstName" sm={3}> First Name: </Label>
                 <Col sm={9}>
                   <Input
                     id="FirstName"
@@ -52,7 +55,7 @@ const RegistrationForm = () => {
                 </Col>
               </FormGroup>
               <FormGroup row>
-                <Label for="Last Name" sm={3}> Last Name:</Label>
+                <Label for="LastName" sm={3}> Last Name:</Label>
                 <Col sm={9}>
                   <Input
                     id="LastName"

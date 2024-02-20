@@ -27,6 +27,7 @@ const LoginForm = () => {
       const result = await login({ username: username, password: password });
       console.log(result);
 
+
       navigate('/posts');
     } catch (error) {
       // Handle errors
